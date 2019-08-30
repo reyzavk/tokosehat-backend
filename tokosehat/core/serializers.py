@@ -8,22 +8,29 @@ class MaterialSerializer(FlexFieldsModelSerializer):
         model = models.Material
         fields = '__all__'
 
+    expandable_fields = {
+        'tags': (
+            'tokosehat.core.serializers.TagSerializer',
+            {'source': 'tags', 'many': True}
+        )
+    }
 
 class CompositionSerializer(FlexFieldsModelSerializer):
     class Meta:
         model = models.Composition
         fields = '__all__'
 
+    expandable_fields = {
+        'material': (
+            'tokosehat.core.serializers.MaterialSerializer',
+            {'source': 'material'}
+        )
+    }
+
 
 class TagSerializer(FlexFieldsModelSerializer):
     class Meta:
         model = models.Tag
-        fields = '__all__'
-
-
-class CategorySerializer(FlexFieldsModelSerializer):
-    class Meta:
-        model = models.Category
         fields = '__all__'
 
 
@@ -50,4 +57,28 @@ class RecipeSerializer(FlexFieldsModelSerializer):
 
     class Meta:
         model = models.Recipe
+        fields = '__all__'
+
+    expandable_fields = {
+        'compositions': (
+            'tokosehat.core.serializers.CompositionSerializer',
+            {'source': 'compositions', 'many': True}
+        )
+    }
+
+
+class CategorySerializer(FlexFieldsModelSerializer):
+    class Meta:
+        model = models.Category
+        fields = '__all__'
+        extra_kwargs = {
+            'prohibitions': {'required': False},
+            'requirements': {'required': False},
+        }
+
+
+class RecipeCategorySerializer(FlexFieldsModelSerializer):
+    recipes = RecipeSerializer(read_only=True, many=True, source='get_recipes')
+    class Meta:
+        model = models.Category
         fields = '__all__'

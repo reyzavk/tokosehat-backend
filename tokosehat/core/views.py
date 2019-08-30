@@ -1,4 +1,4 @@
-from rest_flex_fields import FlexFieldsModelViewSet
+from rest_flex_fields import FlexFieldsModelViewSet, is_expanded
 from django.db.models import (
     Subquery,
     OuterRef,
@@ -11,11 +11,10 @@ from tokosehat.core import models, serializers
 
 
 class RecipeViewSet(FlexFieldsModelViewSet):
-    queryset = models.Recipe.objects.prefetch_related()
+    queryset = models.Recipe.objects.all()
     serializer_class = serializers.RecipeSerializer
     filterset_fields = ('title',)
     search_fields = ('title', 'description', 'instruction', 'tools')
-
 
     @action(detail=False, methods=['get',])
     def recent(self, request, *args, **kwargs):
@@ -47,16 +46,21 @@ class TagViewSet(FlexFieldsModelViewSet):
 class CategoryViewSet(FlexFieldsModelViewSet):
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
-    fielterset_fields = '__all__'
+    filterset_fields = '__all__'
+
+    @action(detail=False, methods=['get',])
+    def recipes(self, request, *args, **kwargs):
+        self.serializer_class = serializers.RecipeCategorySerializer
+        return self.list(request)
 
 
 class PlanViewSet(FlexFieldsModelViewSet):
     queryset = models.Plan.objects.all()
     serializer_class = serializers.PlanSerializer
-    fielterset_fields = '__all__'
+    filterset_fields = '__all__'
 
 
 class PurchaseViewSet(FlexFieldsModelViewSet):
     queryset = models.Purchase.objects.all()
     serializer_class = serializers.PurchaseSerializer
-    fielterset_fields = '__all__'
+    filterset_fields = '__all__'

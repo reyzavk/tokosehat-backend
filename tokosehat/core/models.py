@@ -6,6 +6,7 @@ from django.db import models
 class Recipe(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, default='')
+    benefit = models.TextField(blank=True, default='')
     image = models.ImageField()
     instruction = models.TextField()
     tools = models.TextField(blank=True, default='')
@@ -47,11 +48,18 @@ class Tag(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
-    prohibitions = models.ManyToManyField(Tag, related_name='blockers')
-    requirements = models.ManyToManyField(Tag, related_name='categories')
+    prohibitions = models.ManyToManyField(Tag, blank=True, related_name='blockers')
+    requirements = models.ManyToManyField(Tag, blank=True, related_name='categories')
 
     def __str__(self):
         return self.name
+
+    def get_recipes(self):
+        return Recipe.objects.filter(
+            compositions__material__tags__id__in=self.requirements.all()
+        ).exclude(
+            compositions__material__tags__id__in=self.prohibitions.all()
+        ).distinct()
 
 
 class Plan(models.Model):
@@ -64,5 +72,6 @@ class Purchase(models.Model):
     quantity = models.PositiveIntegerField()
     price = models.PositiveIntegerField()
     is_opportunity = models.BooleanField()
+    is_served = models.BooleanField(default=True)
     datetime = models.DateTimeField(auto_now_add=True)
 
