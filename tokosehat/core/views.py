@@ -6,6 +6,7 @@ from django.db.models import (
     Count,
     Sum,
     F,
+    Value,
 )
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -118,6 +119,14 @@ class PurchaseViewSet(FlexFieldsModelViewSet):
         self.queryset = models.Purchase.objects.order_by('-datetime')
 
         return self.list(request)
+
+    @action(detail=False, methods=['get',])
+    def point(self, request, *args, **kwargs):
+        point = models.Purchase.objects.aggregate(
+            point=Sum('price') / 10
+        )['point']
+
+        return Response({'point': point})
 
 
 class SearchHistoryViewSet(FlexFieldsModelViewSet):
