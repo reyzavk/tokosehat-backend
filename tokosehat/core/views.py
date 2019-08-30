@@ -23,12 +23,11 @@ class RecipeFilter(filters.FilterSet):
 
     def filter_categories(self, qs, field_name, value, *args, **kwargs):
         categories = models.Category.objects.filter(id__in=value)
-        print(categories)
         for category in categories:
             qs = qs.filter(
                 compositions__material__tags__id__in=category.requirements.all()
             ).exclude(
-                compositions__material__tags__id__in=category.requirements.all()
+                compositions__material__tags__id__in=category.prohibitions.all()
             )
 
         qs = qs.distinct()
