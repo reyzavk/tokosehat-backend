@@ -43,6 +43,7 @@ class Composition(models.Model):
 class Tag(models.Model):
     name = models.CharField(max_length=255)
     materials = models.ManyToManyField(Material, related_name='tags')
+    color = models.CharField(max_length=255, default='#000000')
 
     def __str__(self):
         return self.name
