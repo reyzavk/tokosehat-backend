@@ -29,7 +29,7 @@ class Composition(models.Model):
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
-        return self.recipe.title + ': ' + self.materialname
+        return self.recipe.title + ': ' + self.material.name
 
 
 class Tag(models.Model):
