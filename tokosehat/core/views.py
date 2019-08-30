@@ -46,14 +46,6 @@ class RecipeViewSet(FlexFieldsModelViewSet):
         'tools',
     )
 
-    @action(detail=False, methods=['get',])
-    def recent(self, request, *args, **kwargs):
-        self.queryset = models.Recipe.objects.exclude(
-            purchases=None
-        ).order_by('-datetime')
-
-        return self.list(request)
-
     @action(detail=True, methods=['post',])
     def buy_ready(self, request, *args, **kwargs):
         recipe = self.get_object()
@@ -120,6 +112,12 @@ class PurchaseViewSet(FlexFieldsModelViewSet):
         'recipe.compositions',
         'recipe.compositions.material'
     )
+
+    @action(detail=False, methods=['get',])
+    def recent(self, request, *args, **kwargs):
+        self.queryset = models.Purchase.objects.order_by('-datetime')
+
+        return self.list(request)
 
 
 class SearchHistoryViewSet(FlexFieldsModelViewSet):
