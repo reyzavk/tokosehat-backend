@@ -28,6 +28,9 @@ class Composition(models.Model):
     material = models.ForeignKey(Material, related_name='compositions', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
 
+    def __str__(self):
+        return self.recipe.title + ': ' + self.materialname
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=255)
