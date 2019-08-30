@@ -3,6 +3,7 @@ from django.db.models import (
     Subquery,
     OuterRef,
     Prefetch,
+    Count,
 )
 from rest_framework.decorators import action
 from tokosehat.core import models, serializers
@@ -69,3 +70,20 @@ class PurchaseViewSet(FlexFieldsModelViewSet):
         'recipe.compositions',
         'recipe.compositions.material'
     )
+
+
+class SearchHistoryViewSet(FlexFieldsModelViewSet):
+    queryset = models.SearchHistory.objects.all()
+    serializer_class = serializers.SearchHistorySerializer
+    filterset_fields = '__all__'
+
+    @action(detail=False, methods=['get',])
+    def popular(self, request, *args, **kwargs):
+        self.serializer_class = serializers.PopularSearchSerializer
+        self.queryset = models.SearchHistory.objects.values(
+            'keyword'
+        ).annotate(
+            count=Count('pk')
+        ).order_by('-count')
+
+        return self.list(request)

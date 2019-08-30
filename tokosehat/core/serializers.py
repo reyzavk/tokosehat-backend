@@ -89,3 +89,14 @@ class RecipeCategorySerializer(FlexFieldsModelSerializer):
     class Meta:
         model = models.Category
         fields = '__all__'
+
+
+class SearchHistorySerializer(FlexFieldsModelSerializer):
+    class Meta:
+        model = models.SearchHistory
+        fields = '__all__'
+
+
+class PopularSearchSerializer(serializers.Serializer):
+    keyword = serializers.CharField()
+    count = serializers.IntegerField()

@@ -75,3 +75,7 @@ class Purchase(models.Model):
     is_served = models.BooleanField(default=True)
     datetime = models.DateTimeField(auto_now_add=True)
 
+
+class SearchHistory(models.Model):
+    keyword = models.CharField(max_length=255)
+    datetime = models.DateTimeField(auto_now_add=True)
