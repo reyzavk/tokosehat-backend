@@ -40,7 +40,6 @@ class Composition(models.Model):
 class Tag(models.Model):
     name = models.CharField(max_length=255)
     materials = models.ManyToManyField(Material, related_name='tags')
-    image = models.ImageField()
 
     def __str__(self):
         return self.name
