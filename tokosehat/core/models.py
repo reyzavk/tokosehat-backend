@@ -11,6 +11,7 @@ class Recipe(models.Model):
     image = models.ImageField()
     instruction = models.TextField()
     tools = models.TextField(blank=True, default='')
+    price = models.PositiveIntegerField(default=1000)
 
     def __str__(self):
         return self.title
