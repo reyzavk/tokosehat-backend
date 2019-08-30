@@ -103,6 +103,10 @@ class PlanViewSet(FlexFieldsModelViewSet):
     serializer_class = serializers.PlanSerializer
     filterset_fields = '__all__'
 
+    def create(self, request):
+        print(request.data)
+        return super().create(request)
+
 
 class PurchaseViewSet(FlexFieldsModelViewSet):
     queryset = models.Purchase.objects.all()
