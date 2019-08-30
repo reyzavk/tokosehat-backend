@@ -57,11 +57,17 @@ class Category(models.Model):
         return self.name
 
     def get_recipes(self):
-        return Recipe.objects.filter(
-            compositions__material__tags__id__in=self.requirements.all()
-        ).exclude(
+        recipes = Recipe.objects.all()
+        if self.requirements.all():
+            recipes = recipes.filter(
+                compositions__material__tags__id__in=self.requirements.all()
+            )
+
+        recipes = recipes.exclude(
             compositions__material__tags__id__in=self.prohibitions.all()
-        ).distinct()
+        )
+
+        return recipes
 
 
 class Plan(models.Model):
