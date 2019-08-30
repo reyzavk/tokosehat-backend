@@ -5,11 +5,10 @@ from django.db import models
 
 class Recipe(models.Model):
     title = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField(blank=True, default='')
     image = models.ImageField()
     instruction = models.TextField()
     tools = models.TextField(blank=True, default='')
-    price = models.PositiveIntegerField()
 
     def __str__(self):
         return self.title
