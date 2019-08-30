@@ -11,11 +11,17 @@ class Recipe(models.Model):
     tools = models.TextField(blank=True, default='')
     price = models.PositiveIntegerField()
 
+    def __str__(self):
+        return self.title
+
 
 class Material(models.Model):
     name = models.CharField(max_length=255)
     calorie = models.FloatField()
     price = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.name
 
 
 class Composition(models.Model):
@@ -28,11 +34,17 @@ class Tag(models.Model):
     name = models.CharField(max_length=255)
     image = models.ImageField()
 
+    def __str__(self):
+        return self.name
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
     prohibitions = models.ManyToManyField(Tag, related_name='blockers')
     requirements = models.ManyToManyField(Tag, related_name='categories')
+
+    def __str__(self):
+        return self.name
 
 
 class Plan(models.Model):
