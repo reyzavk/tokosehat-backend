@@ -64,3 +64,8 @@ class PurchaseViewSet(FlexFieldsModelViewSet):
     queryset = models.Purchase.objects.all()
     serializer_class = serializers.PurchaseSerializer
     filterset_fields = '__all__'
+    permit_list_expands = (
+        'recipe',
+        'recipe.compositions',
+        'recipe.compositions.material'
+    )

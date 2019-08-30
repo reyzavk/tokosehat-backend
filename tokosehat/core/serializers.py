@@ -45,6 +45,13 @@ class PurchaseSerializer(FlexFieldsModelSerializer):
         model = models.Purchase
         fields = '__all__'
 
+    expandable_fields = {
+        'recipe': (
+            'tokosehat.core.serializers.RecipeSerializer',
+            {'source': 'recipe'}
+        )
+    }
+
 
 class TagImageSerializer(FlexFieldsModelSerializer):
     class Meta:
