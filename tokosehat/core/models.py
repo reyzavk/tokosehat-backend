@@ -7,6 +7,7 @@ class Recipe(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, default='')
     benefit = models.TextField(blank=True, default='')
+    nutrition = models.TextField(blank=True, default='')
     image = models.ImageField()
     instruction = models.TextField()
     tools = models.TextField(blank=True, default='')

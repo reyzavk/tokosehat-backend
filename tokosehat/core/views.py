@@ -37,9 +37,14 @@ class RecipeFilter(filters.FilterSet):
 class RecipeViewSet(FlexFieldsModelViewSet):
     queryset = models.Recipe.objects.all()
     serializer_class = serializers.RecipeSerializer
-    # filterset_fields = ('title',)
     filterset_class = RecipeFilter
-    search_fields = ('title', 'description', 'instruction', 'tools')
+    search_fields = (
+        'title',
+        'description',
+        'instruction',
+        'nutrition',
+        'tools',
+    )
 
     @action(detail=False, methods=['get',])
     def recent(self, request, *args, **kwargs):
