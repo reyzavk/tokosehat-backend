@@ -1,11 +1,6 @@
 from rest_flex_fields import FlexFieldsModelSerializer
+from rest_framework import serializers
 from tokosehat.core import models
-
-
-class RecipeSerializer(FlexFieldsModelSerializer):
-    class Meta:
-        model = models.Recipe
-        fields = '__all__'
 
 
 class MaterialSerializer(FlexFieldsModelSerializer):
@@ -41,4 +36,18 @@ class PlanSerializer(FlexFieldsModelSerializer):
 class PurchaseSerializer(FlexFieldsModelSerializer):
     class Meta:
         model = models.Purchase
+        fields = '__all__'
+
+
+class TagImageSerializer(FlexFieldsModelSerializer):
+    class Meta:
+        model = models.Tag
+        fields = ('image',)
+
+
+class RecipeSerializer(FlexFieldsModelSerializer):
+    tags = TagSerializer(read_only=True, many=True, source='get_tags')
+
+    class Meta:
+        model = models.Recipe
         fields = '__all__'

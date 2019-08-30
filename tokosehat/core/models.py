@@ -13,6 +13,11 @@ class Recipe(models.Model):
     def __str__(self):
         return self.title
 
+    def get_tags(self):
+        return Tag.objects.filter(
+            materials__compositions__recipe=self
+        ).distinct()
+
 
 class Material(models.Model):
     name = models.CharField(max_length=255)
@@ -34,6 +39,7 @@ class Composition(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=255)
+    materials = models.ManyToManyField(Material, related_name='tags')
     image = models.ImageField()
 
     def __str__(self):
@@ -55,8 +61,9 @@ class Plan(models.Model):
 
 
 class Purchase(models.Model):
-    recipe = models.ForeignKey(Recipe, null=True, on_delete=models.SET_NULL)
+    recipe = models.ForeignKey(Recipe, related_name='purchases', null=True, on_delete=models.SET_NULL)
     quantity = models.PositiveIntegerField()
     price = models.PositiveIntegerField()
     is_opportunity = models.BooleanField()
+    datetime = models.DateTimeField(auto_now_add=True)
 
